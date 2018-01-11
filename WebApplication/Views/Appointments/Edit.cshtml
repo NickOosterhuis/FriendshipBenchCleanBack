@@ -1,0 +1,117 @@
+﻿
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+<div ng-app="appointments" ng-controller="appointmentsCtrl">
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+    <div ng-if="appointment">
+        <table>
+            <tbody>
+                <tr>
+                    <td>Date:</td>
+                    <td><input ng-model="appointment.date" /></td>
+                </tr>
+                <tr>
+                    <td>Time:</td>
+                    <td><input ng-model="appointment.time" /></td>
+                </tr>
+                <tr>
+                    <td>Status:</td>
+                    <td><select ng-options="status as status.name for status in statusses" ng-model="appointment.status"></select></td>
+                </tr>
+                <tr>
+                    <td>Bench:</td>
+                    <td><select ng-options="bench as bench.streetname +' '+bench.housenumber for bench in benches" ng-model="appointment.bench"></select></td>
+                </tr>
+                <tr>
+                    <td>Health worker:</td>
+                    <td><input ng-model="appointment.healthworkerName" /></td>
+                </tr>
+                <tr>
+                    <td>Client Id:</td>
+                    <td><input ng-model="appointment.clientId" /></td>
+                </tr>
+
+            </tbody>
+
+        </table>
+        <input ng-click="sendData()" type="button" value="Send data" />
+    </div>
+    <div ng-if="!appointment">
+        There was a problem retrieving the appointment.
+    </div>
+    <script>
+    //module
+        var app = angular.module('appointments', [], function ($locationProvider) {
+            $locationProvider.html5Mode({
+                enabled: true,
+                requireBase: false
+            });
+        });
+
+    //controller
+        app.controller('appointmentsCtrl', function ($scope, $http, $location) {
+            path = $location.path()
+            $scope.id = path.substr(path.lastIndexOf('/') + 1);
+
+            $scope.statusses = [
+                { id: 1, name: "pending" },
+                { id: 2, name: "rejected" }
+            ];
+
+
+            $http.get('http://127.0.0.1:54618/api/benches')
+                .then(function (response) {
+                    //first function handles succes
+                    $scope.benches = response.data;
+                }, function (response) {
+                    //second function handles error
+                    console.log("something went wrong!");
+                });
+
+
+        $http.get('http://127.0.0.1:54618/api/appointments/'+$scope.id)
+            .then(function (response) {
+                //first function handles succes
+                $scope.appointment = response.data;
+            }, function (response) {
+                //second function handles error
+                console.log("something went wrong!");
+                });
+
+
+        $scope.sendData = function () {
+
+            $scope.sendDataObject = {}
+
+            $scope.sendDataObject.id = $scope.id;
+            $scope.sendDataObject.date = $scope.appointment.date;
+            $scope.sendDataObject.time = $scope.appointment.time;
+            $scope.sendDataObject.statusId = $scope.appointment.status.id;
+            $scope.sendDataObject.benchId = $scope.appointment.bench.id;
+            $scope.sendDataObject.clientId = $scope.appointment.clientId;
+            $scope.sendDataObject.healthworkerName = $scope.appointment.healthworkerName;
+
+            $http.put('http://127.0.0.1:54618/api/Appointments/' + $scope.id, $scope.sendDataObject)
+                .then(function (response) {
+                    alert('appointment has been saved');
+
+                }, function (response) {
+                    //second function handles error
+                    alert('something went wrong!');
+
+                });
+
+        };
+    });
+    </script>
+
+

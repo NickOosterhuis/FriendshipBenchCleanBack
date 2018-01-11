@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Healthworker";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript" src="~/js/metro.js"></script>
+<link rel="stylesheet" type="text/css" href="~/css/metro.css" />
+<h2>Healthworker control panel.</h2>
+
+<div ng-app="healthworkers" ng-controller="healthworkerscontroller">
+
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+    <a href="@Url.Action(action: "Add", controller: "AdminHealthworkers")"><button class="btn btn-success" style="margin-bottom: 1.5em">New Healthworker</button></a>
+    <table id="example" class="table">
+        <thead>
+        <th>ID</th>
+        <th>firstname</th>
+        <th>lastname</th>
+        <th>emailadres</th>
+        <th>gender</th>
+        <th>birthday</th>
+        <th>username</th>
+        <th>phonenumber</th>
+        </thead>
+        <tbody>
+            <tr ng-repeat="healthworker in healthworkers">
+                <td id="id">{{ healthworker.id }}</td>
+                <td>{{ healthworker.firstname }}</td>
+                <td>{{ healthworker.lastname }}</td>
+                <td>{{ healthworker.emailadres }}</td>
+                <td>{{ healthworker.gender }}</td>
+                <td>{{ healthworker.birthday }}</td>
+                <td>{{ healthworker.username }}</td>
+                <td>{{ healthworker.phonenumber }}</td>
+                <td><a href="@Url.Action(action: "Info", controller: "AdminHealthworkers")/{{healthworker.id}}"><button class="btn btn-primary">edit</button></a></td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="@Url.Action(action: "Add", controller: "AdminHealthworkers")"><button class="btn btn-success" style="margin-bottom: 1.5em">New Healthworker</button></a>
+
+
+</div>

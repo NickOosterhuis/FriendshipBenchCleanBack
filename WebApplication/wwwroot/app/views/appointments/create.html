@@ -1,0 +1,51 @@
+﻿<h2>Create an appointment</h2>
+<script>
+  $( function() {
+      $("#datepicker").datepicker({ dateFormat: "yy-mm-dd"});
+  } );
+</script>
+<div ng-app="appointments" ng-controller="createAppCtrl">
+    <form class="form-horizontal">
+        <fieldset>
+            <!-- Text input -->
+            <div class="form-group" ng-model="appointment">
+                <label class="col-md-4 control-label" for="date">Date:</label>
+                <div class="col-md-5">
+                    <input ng-model="appointment.date" id="datepicker" name="date" type="text" class="form-control input-md" required="">
+                </div>
+            </div>
+            <div class="form-group" ng-model="appointment">
+                <label class="col-md-4 control-label" for="Time">Time:</label>
+                <div class="col-md-5">
+                    <input ng-model="appointment.time" id="time" name="time" type="text" placeholder="hh:mm" class="form-control input-md" required="">
+                </div>
+            </div>
+            <div class="form-group" ng-model="appointment">
+                <label class="col-md-4 control-label" for="benches">Bench:</label>
+                <div class="col-md-5">
+                    <select ng-options="bench as bench.streetname +' '+bench.housenumber for bench in benches" ng-model="appointment.bench" id="benchs" name="bench" type="text" placeholder="hh:mm" class="form-control input-md" required="">
+
+                    </select>
+                </div>
+            </div>
+            <div class="form-group" ng-model="appointment">
+                <label class="col-md-4 control-label" for="date">ClientID:</label>
+                <div class="col-md-5">
+                    <select ng-options="client.id as client.firstName +' '+client.lastName for client in clients track by client.id" ng-model="appointment.clientId" id="benchs" name="bench" type="text" placeholder="hh:mm" class="form-control input-md" required="" />
+</div>
+            </div>
+
+            <!-- Button (Double) -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="save"></label>
+                <div class="col-md-8">
+                    <button id="save" name="save" class="btn btn-success" ng-click="sendData()">Save appointment</button>
+                </div>
+            </div>
+
+        </fieldset>
+
+
+    </form>
+</div>
+ 

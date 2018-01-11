@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewData["Title"] = "Add a new status!";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!---
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/r-2.2.0/rg-1.0.2/rr-1.2.3/sc-1.4.3/sl-1.2.3/datatables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/r-2.2.0/rg-1.0.2/rr-1.2.3/sc-1.4.3/sl-1.2.3/datatables.min.css" />
+    --->
+
+<h2>Add a new status!</h2>
+
+<div ng-app="status" ng-controller="statuscontroller">
+    <form class="form-horizontal">
+        <fieldset>
+
+            <!-- Form Name -->
+            <legend>Add a new status!</legend>
+            
+            <!-- Text input-->
+            <div class="form-group" ng-model="statusadd">
+                <label class="col-md-4 control-label" for="streetname">Streetname:</label>
+                <div class="col-md-5">
+                    <input ng-model="statusadd.name" id="name" name="name" type="text" placeholder="enter status name here" class="form-control input-md" required="">
+
+                </div>
+            </div>     
+
+            <!-- Button (Double) -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="save"></label>
+                <div class="col-md-8">
+                    <button id="save" name="save" class="btn btn-success" ng-click="saveStatus('post')">Save status</button>
+                    <button id="cancel" name="cancel" class="btn btn-danger" ng-click="redirectToStatuses()">Cancel</button>
+                </div>
+            </div>
+
+        </fieldset>
+    </form>
+</div>

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobileApp.Views.Home"
+             Title="The Friendship Bench">
+    <ContentPage.Content>
+        <StackLayout Padding="16">
+            <Label Style="{StaticResource LabelPageHeadingStyle}">Welcome to Friendship Bench!</Label>
+            <Label>We try to reach out to people in Zimbabwe who are in need of help. Think about people who suffer from mental disorders, unwanted pregnancies or anything else that comes with (mental) problems.</Label>
+            <Label>We work with a SSQ-14, a question list which can determine if you are in need of help. Later on, you will receive more information about this question list. But first, let's login or create an account!</Label>
+            <Button Text="Let's start" x:Name="Continue"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

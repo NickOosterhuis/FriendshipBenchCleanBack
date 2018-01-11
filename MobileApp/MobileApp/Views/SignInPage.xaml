@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobileApp.Views.SignInPage"
+             Title="Sign in">
+    
+    <ContentPage.Content>
+        <StackLayout Padding="16">
+            <Label Style="{StaticResource LabelPageHeadingStyle}">Sign in</Label>
+            <Entry x:Name="Email" Placeholder="Email"></Entry>
+            <Entry x:Name="Password" Placeholder="Password" IsPassword="True"></Entry>
+            <Button x:Name="SignInButton" Text="Sign in" Style="{StaticResource PrimaryButton}"></Button>
+            <Button x:Name="RegisterButton" Text="Register"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

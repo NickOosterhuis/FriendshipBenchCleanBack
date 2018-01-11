@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobileApp.Views.MainQuestionnaire"
+             Title="Questionnaires">
+    <ContentPage.Content>
+        <StackLayout>
+            <ScrollView>
+                <StackLayout>
+                    <Label Margin="16,8,16,0" Style="{StaticResource LabelPageHeadingStyle}" Text="Your previous SSQ-14 tests"/>
+                    <ListView x:Name="QuestionnaireList" 
+                  IsPullToRefreshEnabled="true"
+                  RefreshCommand="{Binding RefreshCommand}"
+                  IsRefreshing="{Binding IsRefreshing}"
+                  ItemSelected="OnItemSelected" >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <TextCell Text="{Binding Id, StringFormat='Questionnaire {0}'}" Detail="{Binding DateTime}"/>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
+            </ScrollView>
+            <Button  Margin="16" Clicked="start_test" Style="{StaticResource PrimaryButton}" VerticalOptions="EndAndExpand" Text="Start a new SSQ-14 test"></Button>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

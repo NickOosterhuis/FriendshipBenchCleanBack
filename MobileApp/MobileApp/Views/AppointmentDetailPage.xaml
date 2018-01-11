@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobileApp.Views.AppointmentDetailPage"
+             Title="Appointment details">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="16">
+                <Label Text="When:" FontAttributes="Bold" />
+                <Label Text="{Binding DateTime}" />
+                <Label Text="Where:" FontAttributes="Bold" />
+                <Label Text="{Binding Bench.Location}" />
+                <Label Text="Who:" FontAttributes="Bold"/>
+                <Label Text="{Binding Healthworker.Name, StringFormat='You and {0}'}" />
+                <Label Text="Status:" FontAttributes="Bold"/>
+                <Label Text="{Binding Status.Name}" />
+                <StackLayout x:Name="ButtonSpace" />
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

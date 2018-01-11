@@ -1,0 +1,32 @@
+﻿<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+
+    table {
+        margin-top: 10px
+    }
+</style>
+<a ng-click="createAppointment()" class="btn btn-small btn-success">create new appointment</a>
+<table class="table table-striped table-condensed">
+    <thead>
+    <th>Date</th>
+    <th>Client</th>
+    <th>Status</th>
+    <th>Bench Location</th>
+    <th>Healthworker</th>
+    <th></th>
+    <th></th>
+    <tbody>
+        <tr ng-repeat="appointment in appointments">
+            <td>{{ appointment.time }}</td>
+            <td>{{ appointment.client.firstName + " " + appointment.client.lastName }}</td>
+            <td>{{ appointment.status.name }}</td>
+            <td>{{ appointment.bench.streetname + " " + appointment.bench.housenumber + ", " + appointment.bench.province + ", " + appointment.bench.district }}</td>
+            <td>{{ appointment.healthworker.firstname + " " + appointment.healthworker.lastname }}</td>
+            <td><a ng-show="appointment.status.id != 3" ng-click="cancelAppointment(appointment.id)" class="btn btn-small btn-primary">cancel</a></td>
+            <td><a ng-click="deleteAppointment(appointment.id)" class="btn btn-small btn-danger">delete</a></td>
+
+        </tr>
+    </tbody>
+</table>

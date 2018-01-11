@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobileApp.Views.NewHealthworkerPage"
+             Title="New Healthworker">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="16">
+                <Label Text="Firstname:" FontAttributes="Bold" />
+                <Label Text="{Binding Firstname}" />
+                <Label Text="Lastname:" FontAttributes="Bold" />
+                <Label Text="{Binding Lastname}" />
+                <Label Text="Day of birth:" FontAttributes="Bold"/>
+                <Label Text="{Binding Birthday}" />
+                <Label Text="Gender:" FontAttributes="Bold"/>
+                <Label Text="{Binding GenderDisplayString}" />
+                <StackLayout x:Name="ButtonSpace" />
+                <Button x:Name="SetHealthworker" Style="{StaticResource PrimaryButton}" Clicked="choose_healthworker" Text="Make this my healthworker"/>
+                <Button x:Name="PreviousHealthworker" Clicked="previous_healthworker" Text="Previous healthworker" />
+                <Button x:Name="NextHealthworker" Clicked="next_healthworker" Text="Next healthworker" />
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

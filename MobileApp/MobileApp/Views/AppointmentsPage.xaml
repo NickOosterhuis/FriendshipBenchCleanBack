@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage  xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobileApp.Views.AppointmentsPage"
+             Title="Appointments">
+    <ScrollView>
+        <ListView x:Name="AppointmentsList" 
+                  IsPullToRefreshEnabled="true"
+                  RefreshCommand="{Binding RefreshCommand}"
+                  IsRefreshing="{Binding IsRefreshing}"
+                  ItemSelected="OnItemSelected" 
+                  IsGroupingEnabled="True" 
+                  GroupDisplayBinding="{Binding Key}" 
+                  GroupShortNameBinding="{Binding Key}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Text="{Binding DateTime}" Detail="{Binding Bench.Location}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            <ListView.GroupHeaderTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Label Margin="16, 8, 0, 0" Style="{StaticResource LabelPageHeadingStyle}" Text="{Binding Key}" LineBreakMode="TailTruncation"/>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.GroupHeaderTemplate>
+        </ListView>
+    </ScrollView>
+
+</ContentPage>

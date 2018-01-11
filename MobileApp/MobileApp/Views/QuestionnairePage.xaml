@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobileApp.Views.QuestionnairePage"
+             Title="SSQ-14 Test">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="16">
+                <Label Style="{StaticResource LabelPageHeadingStyle}" x:Name="ProgressLabel"/>
+                <Label x:Name="QuestionLabel" FontSize="Large" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+                <Button x:Name="YesButton" Text="Yes" Clicked="button_yes"></Button>
+                <Button x:Name="NoButton" Text="No" Clicked="button_no"></Button>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewData["Title"] = "Bench info";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!---
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/r-2.2.0/rg-1.0.2/rr-1.2.3/sc-1.4.3/sl-1.2.3/datatables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/r-2.2.0/rg-1.0.2/rr-1.2.3/sc-1.4.3/sl-1.2.3/datatables.min.css" />
+    --->
+
+
+<h2>Benches</h2>
+<div>Requested info for bench: <div ng-model="benchid">@ViewBag.id</div></div>
+<div ng-app="bench" ng-controller="benchcontroller">
+    
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+    <form name="myForm">
+        <table id="example" class="table">
+            <thead>
+            <th>ID</th>
+            <th>Streetname</th>
+            <th>Housenumber</th>
+            <th>Province</th>
+            <th>District</th>
+            <th></th>
+            <th></th>
+            </thead>
+            <tbody>
+                <tr ng-model="bench">
+                    <td><input ng-model="bench.id" name="id" value={{bench.id}} /></td>
+                    <td><input ng-model="bench.streetname" name="streetname" value={{bench.streetname}} /></td>
+                    <td><input ng-model="bench.housenumber" name="housenumber" value={{bench.housenumber}} /></td>
+                    <td><input ng-model="bench.province" name="province" value={{bench.province}} /></td>
+                    <td><input ng-model="bench.district" name="district" value={{bench.district}} /></td>
+                    <td><input type="button" class="btn btn-danger" value="delete" ng-click="deleteBench()"></td>
+                    <td><input type="button" class="btn btn-success" value="save" ng-click="saveBench('put')"></td>
+                    
+                </tr>
+            </tbody>
+        </table>
+        </form>
+

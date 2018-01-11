@@ -1,0 +1,43 @@
+﻿
+<div ng-app="clients" ng-controller="showClientCtrl">
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+    <div ng-if="client">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td colspan="2"><h2>{{ client.firstName }} {{ client.lastName }}</h2></td>
+                </tr>
+                <tr>
+                    <th>Gender:</th><td>{{ client.gender }}</td>
+                </tr>
+                <tr>
+                    <th>Birthday:</th><td>Born on {{ client.birthDay }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th>Email:</th><td>{{ client.email }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                    <th>Address:</th><td>{{ client.street }} {{ client.houseNumber }}</td>
+                </tr>
+                <tr>
+                    <th>District:</th><td>{{ client.district }}</td>
+                </tr>
+                <tr>
+                    <th>Province:</th><td>{{ client.province }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div ng-if="!client">
+        There was a problem retrieving the appointment.
+    </div>

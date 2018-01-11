@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MobileApp.Views.UserDetailPage"
+             Title="User details">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout Padding="16">
+                <Label Text="Email:" FontAttributes="Bold" />
+                <Label Text="{Binding Email}" />
+                <Label Text="First name:" FontAttributes="Bold" />
+                <Label Text="{Binding FirstName}" />
+                <Label Text="Last name:" FontAttributes="Bold"/>
+                <Label Text="{Binding LastName}" />
+                <Label Text="Gender:" FontAttributes="Bold"/>
+                <Label Text="{Binding Gender}" />
+                <Label Text="Birthday:" FontAttributes="Bold"/>
+                <Label Text="{Binding BirthDay}" />
+                <Label Text="Street name:" FontAttributes="Bold"/>
+                <Label Text="{Binding StreetName}" />
+                <Label Text="House number:" FontAttributes="Bold"/>
+                <Label Text="{Binding HouseNumber}" />
+                <Label Text="Province:" FontAttributes="Bold"/>
+                <Label Text="{Binding Province}" />
+                <Label Text="District:" FontAttributes="Bold"/>
+                <Label Text="{Binding District}" />
+                <StackLayout x:Name="ButtonSpace" />
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

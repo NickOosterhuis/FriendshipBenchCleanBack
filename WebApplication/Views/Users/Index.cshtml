@@ -1,0 +1,80 @@
+﻿
+@{
+    ViewData["Title"] = "Users";
+    Layout = "~/Views/Shared/_layout.cshtml";
+}
+
+<h2>Users</h2>
+
+
+<div ng-app="users" ng-controller="usersCtrl">
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+    <table>
+        <thead>
+        <th>Firstname</th>
+        <th>Surname</th>
+        <th>Gender</th>
+        <th>age</th>
+        <th>Email</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        </th>
+        <tbody>
+            <tr ng-repeat="user in users">
+                <td>{{ user.firstname}}</td>
+                <td>{{ user.lastname}}</td>
+                <td>{{ user.gender }}</td>
+                <td>{{ user.age }}</td>
+                <td>{{ user.email }}</td>
+                <td><a href="./Users/Edit/{{user.id}}">Edit</a></td>
+                <td><input ng-click="deleteUser(user.id)" type="button" value="delete" /></td>
+            </tr>
+        </tbody>
+    </table>
+    <input ng-click="createUser()" type="button" value="Create new User" />
+    <script>
+    //module
+        var app = angular.module('users', []);
+
+    //controller
+        app.controller('usersCtrl', function ($scope, $http) {
+
+
+            $scope.deleteUser = function (id) {
+
+                user = $scope.users.find(function (user) { return user.id === id });
+
+                if (confirm('Do you want to delete ' + user.firstname + ' ' + user.lastname + '?')) {
+                    $http.delete('http://127.0.0.1:54618/api/users/'+user.id)
+                    .then(function (response) {
+                        //first function handles succes
+                        alert(user.firstname + ' ' + user.lastname + ' was deleted');
+                    }, function (response) {
+                        //second function handles error
+                        alert("something went wrong!");
+                    });
+                }
+            }
+
+            $scope.createUser = function () {
+                window.location = "./Users/Create"
+
+            }
+
+        $http.get('http://127.0.0.1:54618/api/users')
+            .then(function (response) {
+                //first function handles succes
+                $scope.users = response.data;
+            }, function (response) {
+                //second function handles error
+                $scope.users = "something went wrong!";
+
+            });
+    });
+    </script>
+
+

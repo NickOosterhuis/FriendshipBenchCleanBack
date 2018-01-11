@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewData["Title"] = "Add a new bench!";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!---
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/r-2.2.0/rg-1.0.2/rr-1.2.3/sc-1.4.3/sl-1.2.3/datatables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/r-2.2.0/rg-1.0.2/rr-1.2.3/sc-1.4.3/sl-1.2.3/datatables.min.css" />
+    --->
+
+<h2>Add a new bench!</h2>
+
+<div ng-app="bench" ng-controller="benchcontroller">
+    <form class="form-horizontal">
+        <fieldset>
+
+            <!-- Form Name -->
+            <legend>Add a new bench!</legend>
+            
+            <!-- Text input-->
+            <div class="form-group" ng-model="benchadd">
+                <label class="col-md-4 control-label" for="streetname">Streetname:</label>
+                <div class="col-md-5">
+                    <input ng-model="benchadd.streetname" id="streetname" name="streetname" type="text" placeholder="enter streetname here" class="form-control input-md" required="">
+
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="housenumber">Housenumber:</label>
+                <div class="col-md-5">
+                    <input ng-model="benchadd.housenumber" id="housenumber" name="housenumber" type="text" placeholder="enter housenumber here" class="form-control input-md" required="">
+
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="province">Province:</label>
+                <div class="col-md-5">
+                    <input ng-model="benchadd.province" id="province" name="province" type="text" placeholder="Enter province here" class="form-control input-md" required="">
+
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="province">District:</label>
+                <div class="col-md-5">
+                    <input ng-model="benchadd.district" id="district" name="district" type="text" placeholder="Enter district here" class="form-control input-md" required="">
+
+                </div>
+            </div>
+
+            <!-- Button (Double) -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="save"></label>
+                <div class="col-md-8">
+                    <button id="save" name="save" class="btn btn-success" ng-click="saveBench('post')">Save bench</button>
+                    <button id="cancel" name="cancel" class="btn btn-danger" ng-click="redirectToBenches()">Cancel</button>
+                </div>
+            </div>
+
+        </fieldset>
+    </form>
+</div>

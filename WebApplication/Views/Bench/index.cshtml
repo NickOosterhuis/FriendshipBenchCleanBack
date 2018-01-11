@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewData["Title"] = "Benches";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!---
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/r-2.2.0/rg-1.0.2/rr-1.2.3/sc-1.4.3/sl-1.2.3/datatables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/r-2.2.0/rg-1.0.2/rr-1.2.3/sc-1.4.3/sl-1.2.3/datatables.min.css" />
+    --->
+
+<h2>Benches</h2>
+<a href="@Url.Action(action: "Index", controller: "Admin")"><button class="btn btn-success">Back to admin panel</button></a>
+<div ng-app="benches" ng-controller="benchescontroller">
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+    <table id="example" class="table">
+        <thead>
+            <th>ID</th>
+            <th>Streetname</th>
+            <th>Housenumber</th>
+            <th>Province</th>
+            <th>District</th>
+            <th></th>
+        </thead>
+        <tbody>
+            <tr ng-repeat="bench in benches">
+                <td id="id">{{ bench.id }}</td>
+                <td>{{ bench.streetname }}</td>
+                <td>{{ bench.housenumber }}</td>
+                <td>{{ bench.province }}</td>
+                <td>{{ bench.district}}</td>
+                <td><a href="@Url.Action(action: "Info", controller: "Bench")/{{bench.id}}"><button class="btn btn-primary">edit</button></a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="@Url.Action(action: "Add", controller: "Bench")"><button class="btn btn-success">New bench</button></a>
+</div>
+

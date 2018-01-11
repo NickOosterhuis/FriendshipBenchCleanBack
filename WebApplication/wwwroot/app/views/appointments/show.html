@@ -1,0 +1,38 @@
+﻿
+<h2>Edit</h2>
+<div ng-app="appointments" ng-controller="showAppCtrl">
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+    <div ng-if="appointment">
+        <table>
+            <tbody>
+                <tr>
+                    <td>Date:</td>
+                    <td><input ng-model="appointment.date" /></td>
+                </tr>
+                <tr>
+                    <td>Time:</td>
+                    <td><input ng-model="appointment.time" /></td>
+                </tr>
+                <tr>
+                    <td>Bench:</td>
+                    <td><select ng-options="bench as bench.streetname +' '+bench.housenumber for bench in benches" ng-model="appointment.bench"></select></td>
+                </tr>
+                <tr>
+                    <td>Health worker:</td>
+                    <td><input ng-model="appointment.healthworkerName" /></td>
+                </tr>
+                <tr>
+                    <td>Client Id:</td>
+                    <td><input ng-model="appointment.clientId" /></td>
+                </tr>
+            </tbody>
+        </table>
+        <input ng-click="sendData()" type="button" value="Send data" />
+    </div>
+    <div ng-if="!appointment">
+        There was a problem retrieving the appointment.
+    </div>

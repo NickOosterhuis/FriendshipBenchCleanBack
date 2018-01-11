@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Appointments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Appointment control panel.</h2>
+<a href="@Url.Action(action: "Index", controller: "Admin")"><button class="btn btn-success">Back to admin panel</button></a>
+<div ng-app="appointments" ng-controller="appointmentscontroller">
+
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+    <table id="example" class="table">
+        <thead>
+        <th>ID</th>
+        <th>time</th>
+        <th>status</th>
+        <th>bench info</th>
+        <th>client email</th>
+        <th>healthworker</th>
+        </thead>
+        <tbody>
+            <tr ng-repeat="appointment in appointments">
+                <td id="id">{{ appointment.id }}</td>
+                <td>{{ appointment.time }}</td>
+                <td>{{ appointment.status.name }}</td>
+                <td>{{ appointment.bench.streetname + appointment.bench.housenumber + appointment.bench.province + appointment.bench.district }}</td>
+                <td>{{ appointment.client.email }}</td>
+                <td>{{ appointment.healthworker.firstname + appointment.healthworker.lastname }}</td>
+                <td><a href="@Url.Action(action: "Info", controller: "AdminAppointments")/{{appointment.id}}"><button class="btn btn-success">Open appointment</button></a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

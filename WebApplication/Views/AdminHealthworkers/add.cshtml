@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewData["Title"] = "Add a new status!";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Add a new healthworker!</h2>
+
+<div ng-app="healthworker" ng-controller="healthworkercontroller">
+    <form class="form-horizontal">
+        <fieldset>
+            <!-- Form Name -->
+            <legend>Add a new healthworker!</legend>
+            
+            <!-- Text input-->
+            <div class="form-group" ng-model="healthworkeradd">
+                <label class="col-md-4 control-label" for="email">Email:</label>
+                <div class="col-md-5">
+                    <input ng-model="healthworkeradd.email" id="email" name="email" type="text" placeholder="enter email adres here" class="form-control input-md" required="">
+                </div>
+            </div> 
+            <div class="form-group" ng-model="healthworkeradd">
+                <label class="col-md-4 control-label" for="password">Password:</label>
+                <div class="col-md-5">
+                    <input ng-model="healthworkeradd.password" id="password" name="password" type="password" placeholder="enter password here" class="form-control input-md" required="">
+                </div>
+            </div> 
+            <div class="form-group" ng-model="healthworkeradd">
+                <label class="col-md-4 control-label" for="confirmPassword">Confirm password:</label>
+                <div class="col-md-5">
+                    <input ng-model="healthworkeradd.confirmPassword" id="confirmPassword" name="confirmPassword" type="password" placeholder="Please confirm password" class="form-control input-md" required="">
+                </div>
+            </div> 
+            <div class="form-group" ng-model="healthworkeradd">
+                <label class="col-md-4 control-label" for="firstName">First name:</label>
+                <div class="col-md-5">
+                    <input ng-model="healthworkeradd.firstName" id="firstName" name="firstName" type="text" placeholder="enter first name here" class="form-control input-md" required="">
+                </div>
+            </div> 
+            <div class="form-group" ng-model="healthworkeradd">
+                <label class="col-md-4 control-label" for="lastName">Last name:</label>
+                <div class="col-md-5">
+                    <input ng-model="healthworkeradd.lastName" id="lastName" name="lastName" type="text" placeholder="enter last name here" class="form-control input-md" required="">
+                </div>
+            </div> 
+            <div class="form-group" ng-model="healthworkeradd">
+                <label class="col-md-4 control-label" for="gender">Gender:</label>
+                <div class="col-md-5">
+                    <input ng-model="healthworkeradd.gender" id="gender" name="gender" type="text" placeholder="enter gender here" class="form-control input-md" required="">
+                </div>
+            </div> 
+            <div class="form-group" ng-model="healthworkeradd">
+                <label class="col-md-4 control-label" for="birthDay">Date of birth:</label>
+                <div class="col-md-5">
+                    <input ng-model="healthworkeradd.birthDay" id="birthDay" name="birthDay" type="text" placeholder="enter date of birth here" class="form-control input-md" required="">
+                </div>
+            </div> 
+            <div class="form-group" ng-model="healthworkeradd">
+                <label class="col-md-4 control-label" for="phoneNumber">phonenumber:</label>
+                <div class="col-md-5">
+                    <input ng-model="healthworkeradd.phoneNumber" id="phoneNumber" name="phoneNumber" type="text" placeholder="enter phonenumber here" class="form-control input-md" required="">
+                </div>
+            </div> 
+
+            <!-- Button (Double) -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="save"></label>
+                <div class="col-md-8">
+                    <button id="save" name="save" class="btn btn-success" ng-click="savehealthworker('post')">Save status</button>
+                    <button id="cancel" name="cancel" class="btn btn-danger" ng-click="redirectToHealthworkers()">Cancel</button>
+                </div>
+            </div>
+
+        </fieldset>
+    </form>
+</div>

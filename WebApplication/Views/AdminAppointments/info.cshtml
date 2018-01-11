@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewData["Title"] = "Appointment info";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Appointments</h2>
+
+<div ng-app="appointment" ng-controller="appointmentcontroller">
+    <div>Requested info for appointment: {{appointment.id}}</div>  
+        <style>
+            table, th, td {
+                border: 1px solid black;
+            }
+        </style>
+    <h3>Appointment info</h3>
+    <table id="example" class="table">
+        <thead>
+            <th>time</th>
+            <th>status</th>
+            <th>streetname</th>
+            <th>housenumber</th>
+            <th>province</th>
+            <th>district</th>
+        </thead>
+        <tbody>
+            <tr ng-model="appointment">
+                <td>{{ appointment.time }}</td>
+                <td>{{ appointment.status.name }}</td>
+                <td>{{ appointment.bench.streetname }}</td>
+                <td>{{ appointment.bench.housenumber }}</td>
+                <td>{{ appointment.bench.province }}</td>
+                <td>{{ appointment.bench.district }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>Client info</h3>
+    <table id="example" class="table">
+        <thead>
+        <th>email</th>
+        <th>firstname</th>
+        <th>lastname</th>
+        <th>gender</th>
+        <th>birthday</th>
+        </thead>
+        <tbody>
+            <tr ng-model="appointment">
+                <td>{{ appointment.client.email }}</td>
+                <td>{{ appointment.client.firstName }}</td>
+                <td>{{ appointment.client.lastName }}</td>
+                <td>{{ appointment.client.gender }}</td>
+                <td>{{ appointment.client.birthDay }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>Healthworker info</h3>
+    <table id="example" class="table">
+        <thead>
+            <th>email</th>
+            <th>firstname</th>
+            <th>lastname</th>
+            <th>gender</th>
+        </thead>
+        <tbody>
+            <tr ng-model="appointment">
+                <td>{{ appointment.healthworker.email }}</td>
+                <td>{{ appointment.healthworker.firstname }}</td>
+                <td>{{ appointment.healthworker.lastname }}</td>
+                <td>{{ appointment.healthworker.gender }}</td>
+            </tr>
+        </tbody>
+    </table>
+<input type="button" class="btn btn-danger" value="Cancel appointment" ng-click="cancelAppointment(appointment.id)">
+
+
+    
+</div>
+

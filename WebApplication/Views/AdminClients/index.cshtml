@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Clients";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Client control panel.</h2>
+
+<div ng-app="clients" ng-controller="clientscontroller">
+    <a href="@Url.Action(action: "Index", controller: "Admin")"><button class="btn btn-success">Back to admin panel</button></a>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+    <table id="example" class="table">
+        <thead>
+        <th>ID</th>
+        <th>firstname</th>
+        <th>lastname</th>
+        <th>emailadres</th>
+        <th>gender</th>
+        <th>birthday</th>
+        <th>streetName</th>
+        <th>houseNumber</th>
+        <th>province</th>
+        <th>district</th>
+        <th></th>
+        </th>
+        <tbody>
+            <tr ng-repeat="client in clients">
+                <td id="id">{{ client.id }}</td>
+                <td>{{ client.firstName }}</td>
+                <td>{{ client.lastName }}</td>
+                <td>{{ client.email }}</td>
+                <td>{{ client.gender }}</td>
+                <td>{{ client.birthDay }}</td>
+                <td>{{ client.streetName }}</td>
+                <td>{{ client.houseNumber}}</td>
+                <td>{{ client.province }}</td>
+                <td>{{ client.district }}</td>
+                <td><a href="@Url.Action(action: "Info", controller: "AdminClients")/{{client.id}}"><button class="btn btn-primary">edit</button></a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

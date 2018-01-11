@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewData["Title"] = "Healthworker info";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!---
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/r-2.2.0/rg-1.0.2/rr-1.2.3/sc-1.4.3/sl-1.2.3/datatables.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/r-2.2.0/rg-1.0.2/rr-1.2.3/sc-1.4.3/sl-1.2.3/datatables.min.css" />
+    --->
+
+
+<h2>Healthworker</h2>
+
+<div ng-app="healthworker" ng-controller="healthworkercontroller">
+    <div>Requested info for healthworker: {{healthworker.id}}</div>  
+        <style>
+            table, th, td {
+                border: 1px solid black;
+            }
+        </style>
+        <form name="myForm">
+            <table id="example" class="table">
+                <thead>
+                    <th>firstname</th>
+                    <th>lastname</th>
+                    <th>gender</th>
+                    <th>birthday</th>
+                    <th>phonenumber</th>
+                </thead>
+                <tbody>
+
+                    <tr ng-model="healthworker">                      
+                        <td><input ng-model="healthworker.firstname" name="firstName" value={{healthworker.firstname}} /></td>
+                        <td><input ng-model="healthworker.lastname" name="lastName" value={{healthworker.lastname}} /></td>
+                        <td><input ng-model="healthworker.gender" name="gender" value={{healthworker.gender}} /></td>
+                        <td><input ng-model="healthworker.birthday" name="birthDay" value={{healthworker.birthday}} /></td>
+                        <td><input ng-model="healthworker.phoneNumber" name="phoneNumber" value={{healthworker.phoneNumber}} /></td>
+                        <td><input type="button" class="btn btn-danger" value="delete" ng-click="deletehealthworker()"></td>
+                        <td><input type="button" class="btn btn-success" value="save" ng-click="savehealthworker('put')"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <input type="hidden" ng-model="healthworker.id" name="id" value={{healthworker.id}} />
+        </form>
+    </div>
+

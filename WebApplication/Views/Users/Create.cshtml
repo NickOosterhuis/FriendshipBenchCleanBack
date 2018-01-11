@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Users</h2>
+
+
+<div ng-app="users" ng-controller="usersCtrl">
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+    <div>
+        <table>
+            <tbody>
+                <tr>
+                    <td>First Name:</td>
+                    <td><input ng-model="user.firstname" /></td>
+                </tr>
+                <tr>
+                    <td>Last Name:</td>
+                    <td><input ng-model="user.lastname" /></td>
+                </tr>
+                <tr>
+                    <td>Gender:</td>
+                    <td><input ng-model="user.gender" /></td>
+                </tr>
+                <tr>
+                    <td>Age:</td>
+                    <td><input ng-model="user.age" /></td>
+                </tr>
+                <tr>
+                    <td>email:</td>
+                    <td><input ng-model="user.email" /></td>
+                </tr>
+            </tbody>
+
+        </table>
+        <input ng-click="sendData()" type="button" value="Send data" />
+    </div>
+    <script>
+    //module
+        var app = angular.module('users', []);
+
+    //controller
+        app.controller('usersCtrl', function ($scope, $http) {
+
+
+            $scope.user = {
+                firstname: "",
+                lastname: "",
+                gender: "",
+                age: 0,
+                email: ""
+            }
+
+            $scope.sendData = function () {
+            $http.post('http://127.0.0.1/api/users/', $scope.user)
+                .then(function (response) {
+                    alert('User '+$scope.user.firstname+' '+$scope.user.lastname+' has been saved');
+
+                }, function (response) {
+                    //second function handles error
+                    alert('something went wrong!');
+
+                });
+
+        };
+    });
+    </script>
+
+
