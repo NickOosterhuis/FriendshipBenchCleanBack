@@ -108,7 +108,7 @@ namespace WebApi
             }
 
             //seed user roles
-            seeder.SeedRoles();
+            //seeder.SeedRoles();
 
             app.UseSwagger();
             app.UseSwaggerUI(c => 
