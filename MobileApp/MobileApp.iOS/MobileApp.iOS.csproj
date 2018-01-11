@@ -119,12 +119,6 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MobileApp\MobileApp.csproj">
-      <Project>{e1d3bf0d-7b88-4b31-af31-28842d0baceb}</Project>
-      <Name>MobileApp</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
       <InProject>false</InProject>
     </ImageAsset>

@@ -138,12 +138,6 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MobileApp\MobileApp.csproj">
-      <Project>{b2fa06e9-ede9-48f9-adbd-93af79d7ce6d}</Project>
-      <Name>MobileApp</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\u16.jpg" />
   </ItemGroup>
   <ItemGroup>
