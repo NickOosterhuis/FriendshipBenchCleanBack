@@ -36,24 +36,15 @@ namespace WebApi.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetAppointmentStatus([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            // Retreive the requested status.
+            AppointmentStatus appointmentStatus = await _context.AppointmentStatuses.SingleOrDefaultAsync(m => m.Id == id);
 
-            var appointmentStatus = await _context.AppointmentStatuses.SingleOrDefaultAsync(m => m.Id == id);
-
+            // Return statuscode 404 due to the status that can't be found.
             if (appointmentStatus == null)
-            {
                 return NotFound();
-            }
 
+            // Return statuscode 200 with the requested data.
             return Ok(appointmentStatus);
-        }
-
-        private bool AppointmentStatusExists(int id)
-        {
-            return _context.AppointmentStatuses.Any(e => e.Id == id);
         }
     }
 }
