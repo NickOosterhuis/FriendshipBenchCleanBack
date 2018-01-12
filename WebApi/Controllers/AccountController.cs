@@ -33,10 +33,7 @@ namespace WebApi.Controllers
         private readonly IConfiguration _config;
         private readonly UserDBContext _context;
 
-        public AccountController(
-          UserManager<User> userManager,
-          SignInManager<User> signInManager,
-          IConfiguration config, UserDBContext context)
+        public AccountController( UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration config, UserDBContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -44,245 +41,243 @@ namespace WebApi.Controllers
             _context = context;
         }
 
-        //GET api/account/user
+        // GET: api/account/user
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("user")]
         public async Task<IActionResult> GetUser()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            // Retreive the requested user.
+            User user = await _userManager.GetUserAsync(User);
 
-            var user = await _userManager.GetUserAsync(User);
-
+            // Return statuscode 404 due to the user that can't be found.
             if (user == null)
-            {
                 return NotFound();
-            }
 
+            // Return statuscode 200 with the requested data.
             return Ok(user);
         }
 
+        // POST: api/register/admin
         [HttpPost("register/admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterAdminViewModel Credentials)
         {
-            if (ModelState.IsValid)
+            // Return statuscode 400 due to non-valid post data.
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            // Create a new user.
+            User admin = new User
             {
-                var admin = new User
-                {
-                    UserName = Credentials.Email,
-                    Email = Credentials.Email,
-                };
-                var result = await _userManager.CreateAsync(admin, Credentials.Password);
-                if (result.Succeeded)
-                {
-                    await _userManager.AddToRoleAsync(admin, "admin");
-                    await _signInManager.SignInAsync(admin, isPersistent: false);
-                    return Ok("User successfully registered");
-                }
-                return Errors(result);
+                UserName = Credentials.Email,
+                Email = Credentials.Email,
+            };
+
+            // Add the new user and give it a role.
+            var result = await _userManager.CreateAsync(admin, Credentials.Password);
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(admin, "admin");
+                await _signInManager.SignInAsync(admin, isPersistent: false);
+                return Ok("User successfully registered");
             }
-            return Error("Unexpected error");
+
+            // Return an error if the action couldn't be executed succesfully.
+            return Errors(result);
         }
 
-        //POST /api/account/register/client
+        // POST: api/account/register/client
         [AllowAnonymous]
         [HttpPost("register/client")]
         public async Task<IActionResult> RegisterClient([FromBody] RegisterClientViewModel Credentials)
         {
-            if (ModelState.IsValid)
-            {
-                var client = new ClientUser {
-                    UserName = Credentials.Email,
-                    Email = Credentials.Email,
-                    FirstName = Credentials.FirstName,
-                    LastName = Credentials.LastName,
-                    Gender = Credentials.Gender,
-                    BirthDay = Credentials.BirthDay, 
-                    StreetName = Credentials.StreetName,
-                    HouseNumber = Credentials.HouseNumber,
-                    Province = Credentials.Province,
-                    District = Credentials.District,
-                };
-                var result = await _userManager.CreateAsync(client, Credentials.Password);
-                if (result.Succeeded)
-                {
-                    await _userManager.AddToRoleAsync(client, "client"); 
-                    await _signInManager.SignInAsync(client, isPersistent: false);
-                    return Ok("User successfully registered");
-                }
-                return Errors(result);
+            // Return statuscode 400 due to non-valid post data.
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
+            // Register a new client.
+            var client = new ClientUser
+            {
+                UserName = Credentials.Email,
+                Email = Credentials.Email,
+                FirstName = Credentials.FirstName,
+                LastName = Credentials.LastName,
+                Gender = Credentials.Gender,
+                BirthDay = Credentials.BirthDay,
+                StreetName = Credentials.StreetName,
+                HouseNumber = Credentials.HouseNumber,
+                Province = Credentials.Province,
+                District = Credentials.District,
+            };
+
+            // Add the new user and give it a role.
+            var result = await _userManager.CreateAsync(client, Credentials.Password);
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(client, "client");
+                await _signInManager.SignInAsync(client, isPersistent: false);
+                return Ok("User successfully registered");
             }
-            return Error("Unexpected error");
+
+            // Return an error if the action couldn't be executed succesfully.
+            return Errors(result);
         }
 
-        //POST /api/account/register/healthworker
+        // POST: api/account/register/healthworker
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("register/healthworker")]
         public async Task<IActionResult> RegisterHealthWorker([FromBody] RegisterHealthWorkerViewModel Credentials)
         {
-            if (ModelState.IsValid)
+            // Return statuscode 400 due to non-valid post data.
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            
+            // Register a new healthworker.
+            var healthWorker = new HealthWorkerUser
             {
-                var healthWorker = new HealthWorkerUser
-                {
-                    UserName = Credentials.Email,
-                    Email = Credentials.Email,
-                    FirstName = Credentials.FirstName,
-                    LastName = Credentials.LastName,
-                    Gender = Credentials.Gender,
-                    BirthDay = Credentials.BirthDay,
-                    PhoneNumber = Credentials.PhoneNumber,
-                };
-                var result = await _userManager.CreateAsync(healthWorker, Credentials.Password);
-                if (result.Succeeded)
-                {
-                    await _userManager.AddToRoleAsync(healthWorker, "healthworker");
-                    await _signInManager.SignInAsync(healthWorker, isPersistent: false);
-                    return Ok("User successfully registered");
-                }
-                return Errors(result);
+                UserName = Credentials.Email,
+                Email = Credentials.Email,
+                FirstName = Credentials.FirstName,
+                LastName = Credentials.LastName,
+                Gender = Credentials.Gender,
+                BirthDay = Credentials.BirthDay,
+                PhoneNumber = Credentials.PhoneNumber,
+            };
 
+            // Add the new healhtworker and give it a role.
+            var result = await _userManager.CreateAsync(healthWorker, Credentials.Password);
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(healthWorker, "healthworker");
+                await _signInManager.SignInAsync(healthWorker, isPersistent: false);
+                return Ok("User successfully registered");
             }
-            return Error("Unexpected error");
+
+            // Return an error if the action couldn't be executed succesfully.
+            return Errors(result);
         }
 
-        //POST /api/account/signin
+        // POST: api/account/signin
         [AllowAnonymous]
         [HttpPost("signin")]
         public async Task<IActionResult> SignIn([FromBody] LoginViewModel Credentials)
         {
-            if (ModelState.IsValid)
+            // Return statuscode 400 due to non-valid post data.
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            // Check if the user can be logged in.
+            var result = await _signInManager.PasswordSignInAsync(Credentials.Email, Credentials.Password, false, false);
+            if (result.Succeeded)
             {
-                var result = await _signInManager.PasswordSignInAsync(Credentials.Email, Credentials.Password, false, false);
-                if (result.Succeeded)
-                {
-                    var user = await _userManager.FindByEmailAsync(Credentials.Email);
-
-                    return Ok("User signed in successfull");
-                }
-
-                return new JsonResult("Unable to sign in") { StatusCode = 401 };
+                var user = await _userManager.FindByEmailAsync(Credentials.Email);
+                return Ok("User signed in successfull");
             }
 
-            return Error("Unexpected error");
+            // Return statuscode 401 due to a login fault.
+            return new JsonResult("Unable to sign in") { StatusCode = 401 };
+
         }
 
+        // POST: api/account/generatetoken
         [AllowAnonymous]
         [HttpPost("generatetoken")]
         public async Task<IActionResult> GenerateToken([FromBody] LoginViewModel model)
         {
-            if (ModelState.IsValid)
+            // Return statuscode 400 due to non-valid post data.
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            // Retreive the the requested user.
+            var user = await _userManager.FindByEmailAsync(model.Email);
+
+            // Return statuscode 404 due to the user that can't be found.
+            if (user == null)
+                return NotFound();
+
+            // Check if the credentials are correct.
+            var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+            if (result.Succeeded)
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-
-                if (user != null)
+                // Set the token variables.
+                var claims = new[]
                 {
-                    var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
-                    if (result.Succeeded)
-                    {
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                };
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWTSettings:SecretKey"]));
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                var token = new JwtSecurityToken(
+                    issuer: _config["JWTSettings:Issuer"],
+                    audience: _config["JWTSettings:Audience"],
+                    claims: claims,
+                    expires: DateTime.Now.AddDays(1),
+                    signingCredentials: creds
+                );
 
-                        var claims = new[]
-                        {
-                            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                        };
-
-                        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JWTSettings:SecretKey"]));
-                        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-                        var token = new JwtSecurityToken(
-                            issuer: _config["JWTSettings:Issuer"],
-                            audience: _config["JWTSettings:Audience"],
-                            claims: claims,
-                            expires: DateTime.Now.AddDays(1),
-                            signingCredentials: creds);
-
-                        return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
-                    }
-                }
+                // Return statuscode 200 with the JWT.
+                return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
             }
 
-            return BadRequest("Could not create token");
+            // Return statuscode 401 due to a login fault.
+            return new JsonResult("Unable to generate toke") { StatusCode = 401 };
         }
 
-        //POST /api/account/signout
+        // POST: api/account/signout
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("signout")]
         public async Task<IActionResult> SignOut()
         {
-            JsonResult logoutMessage = new JsonResult("User is Logged out");
-
+            // Let the user sign out.
             await _signInManager.SignOutAsync();
-
+            JsonResult logoutMessage = new JsonResult("User is Logged out");
             return Ok(logoutMessage); 
         }
 
+        // GET: api/account/currentUser/example@example.com
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet("currentUser/{email}")]
         public async Task<IActionResult> GetCurrentUser([FromRoute] string email)
         {
-            if (ModelState.IsValid)
-            {
-                var currentUser = await _userManager.FindByEmailAsync(email);
+            // Return statuscode 400 due to non-valid post data.
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-                if (currentUser != null)
-                {
-                    return Ok(currentUser);
-                }
-            }
-            else
-            {
+            // Retreive the requested user.
+            User currentUser = await _userManager.FindByEmailAsync(email);
+
+            // Return statuscode 404 due to the current user that can't be found.
+            if (currentUser == null)
                 return NotFound();
-            }
-              
-            return BadRequest(); 
+
+            // Return statuscode 200 with the requested data.
+            return Ok(currentUser);
         }
 
-        
         // PUT: api/Account/edit/example@example.com
         [HttpPut("edit/{email}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> PutClientUserByEmail([FromRoute] string email, [FromBody] EditUserViewModel vm)
+        public async Task<IActionResult> PutClientUserByEmail([FromRoute] string email, [FromBody] EditUserViewModel user)
         {
+            // Return statuscode 400 due to non-valid post data.
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
-            var dbUser = _context.Client.AsNoTracking().SingleOrDefault(x => x.Email == email);
-                    
-            ClientUser user = new ClientUser
-            {
-                Email = dbUser.Email,
-                StreetName = vm.StreetName,
-                HouseNumber = vm.HouseNumber,
-                Province = vm.Province,
-                District = vm.District,
-                PasswordHash = dbUser.PasswordHash,
-                AccessFailedCount = dbUser.AccessFailedCount,
-                BirthDay = dbUser.BirthDay,
-                ConcurrencyStamp = dbUser.ConcurrencyStamp,
-                EmailConfirmed = dbUser.EmailConfirmed,
-                FirstName = dbUser.FirstName,
-                Gender = dbUser.Gender,
-                HealthWorker_Id = dbUser.HealthWorker_Id,
-                Id = dbUser.Id,
-                LastName = dbUser.LastName,
-                LockoutEnabled = dbUser.LockoutEnabled,
-                LockoutEnd = dbUser.LockoutEnd,
-                NormalizedEmail = dbUser.NormalizedEmail,
-                NormalizedUserName = dbUser.NormalizedUserName,
-                PhoneNumber = dbUser.PhoneNumber,
-                PhoneNumberConfirmed = dbUser.PhoneNumberConfirmed,
-                SecurityStamp = dbUser.SecurityStamp,
-                TwoFactorEnabled = dbUser.TwoFactorEnabled,
-                UserName = dbUser.UserName,
-            };                       
+            // Retreive the current user.
+            var currentUser = _context.Client.AsNoTracking().SingleOrDefault(x => x.Email == email);
 
+            // Return statuscode 404 due to the user that can't be found.
+            if (currentUser == null)
+                return NotFound();
+
+            // Create a new user model.
+            ClientUser newUser = currentUser;
+            newUser.StreetName = user.StreetName;
+            newUser.HouseNumber = user.HouseNumber;
+            newUser.Province = user.Province;
+            newUser.District = user.District;
+
+            // Try to save the requested changes.
             _context.Entry(user).State = EntityState.Modified;
-            
             try
             {
                 await _context.SaveChangesAsync();
@@ -290,60 +285,37 @@ namespace WebApi.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 if (!ClientUserExists(email))
-                {
                     return NotFound();
-                }
                 else
-                {
                     throw;
-                }
             }
 
+            // Return statuscode 204 when the user has been updated.
             return NoContent();
         }
 
         // PUT: api/Account/edit/example@example.com
         [HttpPut("addHealthworker/{email}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> PutHealthWorkerClientUserByEmail([FromRoute] string email, [FromBody] AddHealthworkerToUserViewModel vm)
+        public async Task<IActionResult> PutHealthWorkerClientUserByEmail([FromRoute] string email, [FromBody] AddHealthworkerToUserViewModel user)
         {
+            // Return statuscode 400 due to non-valid post data.
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
-            var dbUser = _context.Client.AsNoTracking().SingleOrDefault(x => x.Email == email);
+            // Retreive the current user.
+            var currentUser = _context.Client.AsNoTracking().SingleOrDefault(x => x.Email == email);
 
-            ClientUser user = new ClientUser
-            {
-                Email = dbUser.Email,
-                StreetName = dbUser.StreetName,
-                HouseNumber = dbUser.HouseNumber,
-                Province = dbUser.Province,
-                District = dbUser.District,
-                PasswordHash = dbUser.PasswordHash,
-                AccessFailedCount = dbUser.AccessFailedCount,
-                BirthDay = dbUser.BirthDay,
-                ConcurrencyStamp = dbUser.ConcurrencyStamp,
-                EmailConfirmed = dbUser.EmailConfirmed,
-                FirstName = dbUser.FirstName,
-                Gender = dbUser.Gender,
-                HealthWorker_Id = vm.HealthWorker_Id,
-                Id = dbUser.Id,
-                LastName = dbUser.LastName,
-                LockoutEnabled = dbUser.LockoutEnabled,
-                LockoutEnd = dbUser.LockoutEnd,
-                NormalizedEmail = dbUser.NormalizedEmail,
-                NormalizedUserName = dbUser.NormalizedUserName,
-                PhoneNumber = dbUser.PhoneNumber,
-                PhoneNumberConfirmed = dbUser.PhoneNumberConfirmed,
-                SecurityStamp = dbUser.SecurityStamp,
-                TwoFactorEnabled = dbUser.TwoFactorEnabled,
-                UserName = dbUser.UserName,
-            };
+            // Return statuscode 404 due to the user that can't be found.
+            if (currentUser == null)
+                return NotFound();
 
+            // Update the healthworker relation of the user.
+            ClientUser newUser = currentUser;
+            currentUser.HealthWorker_Id = user.HealthWorker_Id;
+
+            // Try to save the requested changes.
             _context.Entry(user).State = EntityState.Modified;
-
             try
             {
                 await _context.SaveChangesAsync();
@@ -351,15 +323,12 @@ namespace WebApi.Controllers
             catch (DbUpdateConcurrencyException)
             {
                 if (!ClientUserExists(email))
-                {
                     return NotFound();
-                }
                 else
-                {
                     throw;
-                }
             }
 
+            // Return statuscode 204 when the user has been updated.
             return NoContent();
         }
 
@@ -369,18 +338,6 @@ namespace WebApi.Controllers
                 .Select(x => x.Description)
                 .ToArray();
             return new JsonResult(items) { StatusCode = 400 };
-        }
-
-        private JsonResult Error(string message)
-        {
-            return new JsonResult(message) { StatusCode = 400 };
-        }
-
-        private static double ConvertToUnixTimestamp(DateTime date)
-        {
-            DateTime origin = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            TimeSpan diff = date.ToUniversalTime() - origin;
-            return Math.Floor(diff.TotalSeconds);
         }
 
         private bool ClientUserExists(string id)
