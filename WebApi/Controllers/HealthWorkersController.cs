@@ -25,18 +25,20 @@ namespace WebApi.Controllers
             _context = context;
         }
 
+        // GET: api/HealthWorkers
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> GetHealthWorkers()
+        public IActionResult GetHealthWorkers()
         {
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState); 
-            }
+            // Return statuscode 204 due to lack of content.
+            if (_context.HealthWorker.Count() == 0)
+                return NoContent();
 
+            // Create a list with all the requested healthworkers.
             List<HealthWorkerViewModel> healthWorkers = new List<HealthWorkerViewModel>();
             foreach (HealthWorkerUser healthWorker in _context.HealthWorker)
             {
+                // Create an healthworker viewmodel and add it to the list with healthworkers.
                 healthWorkers.Add(new HealthWorkerViewModel
                 {
                     Id = healthWorker.Id,
@@ -48,6 +50,8 @@ namespace WebApi.Controllers
                     PhoneNumber = healthWorker.PhoneNumber,
                 });
             }
+
+            // Return statuscode 200 with the requested data.
             return Ok(healthWorkers); 
         }
 
@@ -56,84 +60,80 @@ namespace WebApi.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetHealthWorkerUser([FromRoute] string id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            // Retreive the requested healthworker.
+            HealthWorkerUser healthworker = await _context.HealthWorker.SingleOrDefaultAsync(m => m.Id == id);
 
-            var healthWorkerUser = await _context.HealthWorker.SingleOrDefaultAsync(m => m.Id == id);
-
-            if (healthWorkerUser == null)
-            {
+            // Return statuscode 404 due to the healthworker that can't be found.
+            if (healthworker == null)
                 return NotFound();
-            }
 
-            HealthWorkerViewModel vm = new HealthWorkerViewModel();
-
-            vm.Id = healthWorkerUser.Id;
-            vm.Firstname = healthWorkerUser.FirstName;
-            vm.Lastname = healthWorkerUser.LastName;
-            vm.Email = healthWorkerUser.Email;
-            vm.Birthday = healthWorkerUser.BirthDay;
-            vm.Gender = healthWorkerUser.Gender;
-            vm.PhoneNumber = healthWorkerUser.PhoneNumber;
-            
-            return Ok(vm);
-        }
-
-        // PUT: api/Account/edit/1
-        [HttpPut("edit/{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> PutClientUserByEmail([FromRoute] string id, [FromBody] EditHealthWorkerViewModel vm)
-        {
-            if (!ModelState.IsValid)
+            // Create a healthworker viewmodel
+            HealthWorkerViewModel healthworkerViewModel = new HealthWorkerViewModel
             {
-                return BadRequest(ModelState);
-            }
-
-            var dbUser = _context.HealthWorker.AsNoTracking().SingleOrDefault(x => x.Id == id);
-
-            HealthWorkerUser user = new HealthWorkerUser
-            {
-                Email = dbUser.Email,
-                PasswordHash = dbUser.PasswordHash,
-                AccessFailedCount = dbUser.AccessFailedCount,
-                BirthDay = vm.BirthDay,
-                ConcurrencyStamp = dbUser.ConcurrencyStamp,
-                EmailConfirmed = dbUser.EmailConfirmed,
-                FirstName = vm.FirstName,
-                Gender = vm.Gender,
-                Id = dbUser.Id,
-                LastName = vm.LastName,
-                LockoutEnabled = dbUser.LockoutEnabled,
-                LockoutEnd = dbUser.LockoutEnd,
-                NormalizedEmail = dbUser.NormalizedEmail,
-                NormalizedUserName = dbUser.NormalizedUserName,
-                PhoneNumber = vm.PhoneNumber,
-                PhoneNumberConfirmed = dbUser.PhoneNumberConfirmed,
-                SecurityStamp = dbUser.SecurityStamp,
-                TwoFactorEnabled = dbUser.TwoFactorEnabled,
-                UserName = dbUser.UserName,
+                Id = healthworker.Id,
+                Firstname = healthworker.FirstName,
+                Lastname = healthworker.LastName,
+                Email = healthworker.Email,
+                Birthday = healthworker.BirthDay,
+                Gender = healthworker.Gender,
+                PhoneNumber = healthworker.PhoneNumber
             };
 
-            _context.Entry(user).State = EntityState.Modified;
+            // Return statuscode 200 with the requested data.
+            return Ok(healthworkerViewModel);
+        }
 
+        // PUT: api/HealthWorkers/1
+        [HttpPut("edit/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> PutHealthworker([FromRoute] string id, [FromBody] EditHealthWorkerViewModel healthworker)
+        {
+            // Return statuscode 400 due to non-valid post data.
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            // Retreive the current healthworker information.
+            HealthWorkerUser currentHealthworker = _context.HealthWorker.AsNoTracking().SingleOrDefault(x => x.Id == id);
+
+            // Creata a new healthworker model.
+            HealthWorkerUser user = new HealthWorkerUser
+            {
+                Email = currentHealthworker.Email,
+                PasswordHash = currentHealthworker.PasswordHash,
+                AccessFailedCount = currentHealthworker.AccessFailedCount,
+                BirthDay = healthworker.BirthDay,
+                ConcurrencyStamp = currentHealthworker.ConcurrencyStamp,
+                EmailConfirmed = currentHealthworker.EmailConfirmed,
+                FirstName = healthworker.FirstName,
+                Gender = healthworker.Gender,
+                Id = currentHealthworker.Id,
+                LastName = healthworker.LastName,
+                LockoutEnabled = currentHealthworker.LockoutEnabled,
+                LockoutEnd = currentHealthworker.LockoutEnd,
+                NormalizedEmail = currentHealthworker.NormalizedEmail,
+                NormalizedUserName = currentHealthworker.NormalizedUserName,
+                PhoneNumber = healthworker.PhoneNumber,
+                PhoneNumberConfirmed = currentHealthworker.PhoneNumberConfirmed,
+                SecurityStamp = currentHealthworker.SecurityStamp,
+                TwoFactorEnabled = currentHealthworker.TwoFactorEnabled,
+                UserName = currentHealthworker.UserName,
+            };
+
+            // Try to save the requested changes.
+            _context.Entry(user).State = EntityState.Modified;
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!HealthWorkerUserExists(id))
-                {
+                if (!_context.HealthWorker.Any(e => e.Id == id))
                     return NotFound();
-                }
                 else
-                {
                     throw;
-                }
             }
 
+            // Return statuscode 204 when the healthworker has been updated.
             return NoContent();
         }
 
@@ -143,26 +143,19 @@ namespace WebApi.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> DeleteHealthWorkerUser([FromRoute] string id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            // Retreive the requested healthworker.
+            HealthWorkerUser healthworker = await _context.HealthWorker.SingleOrDefaultAsync(m => m.Id == id);
 
-            var healthWorkerUser = await _context.HealthWorker.SingleOrDefaultAsync(m => m.Id == id);
-            if (healthWorkerUser == null)
-            {
+            // Return statuscode 404 due to the healthworker that can't be found.
+            if (healthworker == null)
                 return NotFound();
-            }
 
-            _context.HealthWorker.Remove(healthWorkerUser);
+            // Remove the healthworker.
+            _context.HealthWorker.Remove(healthworker);
             await _context.SaveChangesAsync();
 
-            return Ok(healthWorkerUser);
-        }
-
-        private bool HealthWorkerUserExists(string id)
-        {
-            return _context.HealthWorker.Any(e => e.Id == id);
+            // Return statuscode 200 when the healhtworker has been deleted.
+            return Ok(healthworker);
         }
     }
 }

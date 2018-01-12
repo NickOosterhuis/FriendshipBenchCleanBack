@@ -127,7 +127,7 @@ namespace WebApi.Controllers
             if (id != appointment.Id)
                 return BadRequest();
 
-            // Try to save the changes requested changes.
+            // Try to save the requested changes.
             _context.Entry(appointment).State = EntityState.Modified;
             try
             {

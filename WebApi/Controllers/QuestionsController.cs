@@ -26,9 +26,14 @@ namespace WebApi.Controllers
         // GET: api/Questions
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public IEnumerable<Questions> GetQuestions()
+        public IActionResult GetQuestions()
         {
-            return _context.Questions;
+            // Return statuscode 204 due to lack of content.
+            if (_context.Questions.Count() == 0)
+                return NoContent();
+
+            // Return statuscode 200 with the requested data.
+            return Ok(_context.Questions);
         }
 
         // GET: api/Questions/5
@@ -36,19 +41,15 @@ namespace WebApi.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetQuestions([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            // Retreive the requested question.
+            Questions question = await _context.Questions.SingleOrDefaultAsync(m => m.Id == id);
 
-            var questions = await _context.Questions.SingleOrDefaultAsync(m => m.Id == id);
-
-            if (questions == null)
-            {
+            // Return statuscode 404 due to the question that can't be found.
+            if (question == null)
                 return NotFound();
-            }
 
-            return Ok(questions);
+            // Return statuscode 200 with the requested data.
+            return Ok(question);
         }
 
         // PUT: api/Questions/5
@@ -56,34 +57,29 @@ namespace WebApi.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PutQuestions([FromRoute] int id, [FromBody] Questions questions)
         {
+            // Return statuscode 400 due to non-valid post data.
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
+            // Return statuscode 400 due to differences in the ID.
             if (id != questions.Id)
-            {
                 return BadRequest();
-            }
 
+            // Try to save the changes requested changes.
             _context.Entry(questions).State = EntityState.Modified;
-
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!QuestionsExists(id))
-                {
+                if (!_context.Questions.Any(e => e.Id == id))
                     return NotFound();
-                }
                 else
-                {
                     throw;
-                }
             }
 
+            // Return statuscode 204 when the question has been updated.
             return NoContent();
         }
 
@@ -92,42 +88,16 @@ namespace WebApi.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> PostQuestions([FromBody] Questions questions)
         {
+            // Return statuscode 400 due to non-valid post data.
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
 
+            // Commit the changes to the database.
             _context.Questions.Add(questions);
             await _context.SaveChangesAsync();
 
+            // Return the data of the newly created question.
             return CreatedAtAction("GetQuestions", new { id = questions.Id }, questions);
-        }
-
-        // DELETE: api/Questions/5
-        [HttpDelete("{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> DeleteQuestions([FromRoute] int id)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var questions = await _context.Questions.SingleOrDefaultAsync(m => m.Id == id);
-            if (questions == null)
-            {
-                return NotFound();
-            }
-
-            _context.Questions.Remove(questions);
-            await _context.SaveChangesAsync();
-
-            return Ok(questions);
-        }
-
-        private bool QuestionsExists(int id)
-        {
-            return _context.Questions.Any(e => e.Id == id);
         }
     }
 }
